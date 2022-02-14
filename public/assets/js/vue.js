@@ -19,7 +19,7 @@ new Vue ({
     },
     methods: {
         fetchLessonData() {
-            fetch("http://localhost:3000/lessons").then((response) => {
+            fetch("https://cst3145-cw2-ginters.herokuapp.com/lessons").then((response) => {
                 response.json().then((data) => {
                     store.lessons = data; 
                 })
