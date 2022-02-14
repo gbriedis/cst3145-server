@@ -5,82 +5,65 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lessons</title>
     <link rel="stylesheet" href="assets/css/style.css">
+    <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
 
 </head>
 <body>
     
-    <div id="vue">
-        <!-- shopping cart -->
-        <div v-if='showLesson'>
-            <div class="nav" v-if="cart.length >= 1">
-                <p>Items in Cart: {{ cart.length }}</p>
-                <div id="nav-checkout" @click="showCart">
-                    <img v-bind:src="shoppingCartIcon">
-                    <p>Cart</p>
-                </div>
-            </div>
+  <div id="app" class="bg-gray-800 min-h-screen">
+    <div class="flex flex-col items-center justify-center">
 
-            <!-- sorting buttons -->
-
-
-            <div id="sort-div">
-                <!-- sort option -->
-                Sort By:
-                <select name="sortType" id="select" v-model="sortType">
-                    <option value="subject">Subject</option>
-                    <option value="location">Location</option>
-                    <option value="price">Price</option>
-                    <option value="spaces">Availability</option>
-                </select>
-
-                <!-- option for ascending/descending -->
-                <select name="ascendingDescending" id="select" v-model="ascendingDescending">
-                    <option value="ascending">Ascending</option>
-                    <option value="descending">Descending</option>
-                </select>
-
-                <!-- search -->
-                <input type="text" v-model="searchValue" placeholder="Search by Subject" id="search-input"></input>
-            </div>
-
-            
-            <!-- lessons -->
-            <div id="lesson-container">
-                <div id="lesson-list" v-for="lesson in sortItems">
-                    <img class="lesson-image" v-bind:src="lesson.image">
-                    <p>Subject: {{lesson.subject}}</p>
-                    <p>Location: {{lesson.location}}</p>
-                    <p>Price: £{{lesson.price}}</p>
-                    <p>Space: {{lesson.spaces}}</p>
-                    <button @click='addToCart(lesson)' :disabled="lesson.spaces == 0">Add To Cart</button>
-                    <span id="lesson-sold-out" v-if="lesson.spaces == 0">Sold Out!</span>
-                </div>
-            </div>   
-        </div>
-
-        <!-- checkout -->
-        <div v-else>
-            <p id="back-to-lesson-pointer" @click="showLesson = true"><-- Go Back to Lessons</p>
-            <div id="checkout-container" v-if="cart.length >= 1" v-for="item in cart">
-                <img id="checkout-img" v-bind:src="item.image">
-                <p>Subject: {{item.subject}}</p>
-                <p>Location: {{item.location}}</p>
-                <p>Price: £{{item.price}}</p> 
-                <button @click='removeItem(item)'>Remove Item</button>
-            </div>
-
-            <!-- checkout form -->
-            <div id="checkout-details">
-                <input type="text" v-model.trim=checkout.name placeholder="Name">
-                <input type="text" v-model.trim=checkout.phoneNumber placeholder="Phone Number">
-                <button @click='alertOrder()' :disabled="!validateOrder">Checkout</button>
-            </div>
-
-        </div>
+      <!-- Login/Logout -->
+      <div v-if="loggedIn == false" class="mt-5">
+        <input class="shadow appearance-none border border-red-500 rounded w-50 py-1 px-2 text-gray-500 text-sm mb-3 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="Email" name="email">
+        <input class="shadow appearance-none border border-red-500 rounded w-50 py-1 px-2 text-gray-500 text-sm mb-3 leading-tight focus:outline-none focus:shadow-outline" type="text" placeholder="Password" name="password">
         
+        <button class="bg-blue-500 hover:bg-blue-700 text-white  py-1 px-2 text-sm rounded focus:outline-none focus:shadow-outline" @click="login()">Login</button>
+      </div>
+      <div v-if="loggedIn == true" class="mt-5">
+        <button class="bg-blue-500 hover:bg-blue-700 text-white  py-1 px-2 text-sm rounded focus:outline-none focus:shadow-outline" @click='loggedIn = false'>Logout</button>
+      </div>
+
+      <!-- User and Cart information -->
+      <div class="flex items-center justify-center space-x-2 p-2 flex-wrap">
+        <h1 class="mt-5 mb-5 font-semibold text-orange-500">User : {{users.email}}</h1>
+        <div>
+          <span class="ml-20 mt-5 mb-5 font-semibold text-orange-500">Cart : {{cart.length }}</span>
+          <button class="ml-2 bg-transparent hover:bg-blue-500 text-blue-500 hover:text-white  px-2 border border-blue-500 hover:border-transparent rounded"  @click='showLesson = false' :disabled="cart.length == 0">Checkout</button>
+        </div>
+
+      </div>
+
+      <!-- Lessons display -->
+      <div v-if='showLesson == true' class="flex items-center justify-center space-x-2 p-2 flex-wrap">
+        <div class="bg-gray-200 shadow-md text-sm p-2 rounded-lg w-40 h-auto m-2" v-for="(lesson,index) in lessons" :key="index">
+          <p>Topic : {{lesson.topic}}</p>
+          <p>Location : {{lesson.location}}</p>
+          <p>Price : £{{lesson.price}}</p>
+          <p>Space : {{lesson.spaces}}</p>
+          <span id="lesson-sold-out" v-if="lesson.spaces == 0">Out of spaces</span>
+          <button class="bg-transparent hover:bg-blue-500 text-blue-500 hover:text-white py-1 px-2 border border-blue-500 hover:border-transparent rounded" @click='addToCart(lesson)' :disabled="lesson.spaces == 0">Add To Cart</button>
+        </div>
+      </div>
+    
+
+
+      <!-- checkout -->
+      <div v-if='showLesson == false'>
+        <p class="bg-blue-500 cursor-pointer p-2 text-white" @click="showLesson = true"><-- Go Back to Lessons</p>
+        <div class="flex items-center justify-center space-x-2 p-2 flex-wrap">
+          <div class="bg-gray-200 shadow-md text-sm p-2 rounded-lg w-40 h-auto m-2" v-if="cart.length >= 1" v-for="item in cart">
+            <p>Topic : {{item.topic}}</p>
+            <p>Location : {{item.location}}</p>
+            <p>Price : £{{item.price}}</p>
+            <button class="bg-transparent hover:bg-blue-500 text-blue-500 hover:text-white py-1 px-2 border border-blue-500 hover:border-transparent rounded" @click='removeItem(item)'>Remove Item</button>
+          </div>
+        </div>
+      </div>
 
     </div>
+  </div>
 
     <script src="assets/js/vue.js"></script>
     <!-- <script src="assets/js/checkout.js"></script> -->

@@ -1,26 +1,24 @@
 var express = require("express");
 var app = express();
+const mongoClient = require('mongodb').MongoClient
+const uri = "mongodb+srv://gbriedis:strongpw@cluster0.pr4ee.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 
-// Static Files
-app.use(express.static('public'));
-app.use('/css', express.static(__dirname + 'public/css'))
-app.use('/img', express.static(__dirname + 'public/img'))
-app.use('/js', express.static(__dirname + 'public/js'))
-
-// Routes GET requests to /lessons to the request handler
-app.get("/lessons", function (request, response) {
-  response.send([
-    { topic: "Maths", location: "London", price: 100 },
-    { topic: "Maths", location: "Liverpool", price: 80 },
-    { topic: "Maths", location: "Oxford", price: 90 },
-    { topic: "Maths", location: "Bristol", price: 122 },
-  ]);
+// get all lessons from MongoDB
+let lessons = []
+mongoClient.connect(uri, function(err, db) {
+  if (err) throw err;
+  var dbo = db.db("cst3145");
+  dbo.collection("lessonsDB").find({}).toArray(function(err, result) {
+    if (err) throw err;
+    lessons = result
+    db.close();
+  });
 });
 
 // GET requests to /users returns user information
-app.get("/user", function (request, response) {
-  response.send({ email: "user@email.com", password: "mypassword" });
-});
+app.get("/lessons", function(req, res) {
+  res.send(lessons)
+})
 
 // returning a 404 error when path is not found
 app.use(function (request, response) {
