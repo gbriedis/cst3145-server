@@ -15,7 +15,7 @@ let store = new Vue({
 
     methods: {
         fetchLessonData() {
-            fetch("http://localhost:3000/lessons").then((response) => {
+            fetch("https://cst3145-cw2-ginters.herokuapp.com/lessons").then((response) => {
                 response.json().then((data) => {
                     store.lessons = data;
                 });
@@ -23,7 +23,7 @@ let store = new Vue({
         },
 
         fetchUserData() {
-            fetch("http://localhost:3000/user").then((response) => {
+            fetch("https://cst3145-cw2-ginters.herokuapp.com/users").then((response) => {
                 response.json().then((data) => {
                     store.users = data;
                 });
@@ -40,15 +40,5 @@ let store = new Vue({
             this.cart.splice(index, 1);
             product.spaces += 1;
         },
-
-        login: function() {
-            let mail = document.querySelector("input[name=email]").value
-            let pw = document.querySelector("input[name=password]").value
-            let userDetails = {email: mail, password: pw}
-            
-            fetch('http://localhost:3000/login', {
-                method: 'POST'
-            })
-        }
     },
 });
