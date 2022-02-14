@@ -1,6 +1,11 @@
 var express = require("express");
 var app = express();
-app.use(express.static("public"));
+
+// Static Files
+app.use(express.static('public'));
+app.use('/css', express.static(__dirname + 'public/css'))
+app.use('/img', express.static(__dirname + 'public/img'))
+app.use('/js', express.static(__dirname + 'public/js'))
 
 // Routes GET requests to /lessons to the request handler
 app.get("/lessons", function (request, response) {
