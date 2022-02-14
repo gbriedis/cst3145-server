@@ -1,7 +1,12 @@
 var express = require("express");
 var app = express();
+var cors = require('cors')
+
 const mongoClient = require('mongodb').MongoClient
 const uri = "mongodb+srv://gbriedis:strongpw@cluster0.pr4ee.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+
+app.use(cors())
+
 
 // get all lessons from MongoDB
 let lessons = []
@@ -27,4 +32,4 @@ app.use(function (request, response) {
 
 const port = process.env.PORT || 3000
 app.listen(port)
-console.log("Listening on port " + 3000);
+
