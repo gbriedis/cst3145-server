@@ -1,0 +1,105 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+}
+
+.container { 
+    display:flex; 
+    flex-direction:column; 
+    min-height:100vh;
+}
+
+#lesson-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
+
+#lesson-list {
+    max-width: 15em;
+    margin: 2em;
+    list-style-type: none;
+    border: 1px solid lightblue;
+    border-radius: 5px;
+    padding: 1em;
+}
+
+.lesson-image {
+    max-width: 30%;
+    float: right;
+}
+
+#lesson-sold-out {
+    color: red;
+    padding: 1em;
+}
+
+.nav {
+    color: white;
+    background-color: #373737;
+    position: absolute;
+    left: 0%;
+    top: 0%;
+    padding: 2em;
+    text-align: center;
+}
+
+#nav-checkout {
+    background-color: rgb(96, 96, 96);
+    padding: 1.2em;
+}
+
+#nav-checkout:hover {
+    background-color: rgb(129, 129, 129);
+    cursor: pointer;
+}
+
+#back-to-lesson-pointer {
+    cursor: pointer;
+    background-color: rgb(234, 234, 234);
+    padding: 1em;
+}
+
+#sort-div {
+    background-color: blanchedalmond;
+    padding: 1.5em;
+    text-align: center;
+}
+
+#checkout-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin: 1em auto;
+    text-align: center;
+    border:1px solid rgb(96, 96, 96);
+    max-width: 960px;
+}
+#checkout-container p {
+    padding: .5em;
+}
+
+#checkout-img{
+    max-width: 5%;
+    padding: 1em;
+}
+
+#checkout-details {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin: 1em auto;
+    padding: 1em 0;
+    text-align: center;
+    max-width: 960px;
+}
+
+#checkout-details input {
+    padding: .25em;
+}
