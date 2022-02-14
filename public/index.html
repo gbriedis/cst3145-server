@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Index</title>
+    <script src="https://unpkg.com/vue"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <div id="app" class="bg-gray-800 min-h-screen">
+      <div class="flex flex-col items-center justify-center">
+        <h1 class="mt-10 mb-10 font-semibold text-orange-500">
+          Available lessons
+        </h1>
+        <div class="flex items-center justify-center space-x-2 p-2 flex-wrap">
+          <div
+            class="bg-gray-200 shadow-md text-sm p-2 rounded-lg w-40 h-20"
+            v-for="(lesson,index) in lessons"
+            :key="index"
+          >
+            <h1>Topic : {{lesson.topic}}</h1>
+            <h1>Location : {{lesson.location}}</h1>
+            <h1>£{{lesson.price}}</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let store = new Vue({
+        el: "#app",
+        data: { lessons: {} },
+        created: function () {
+          this.fetchLessonData();
+        },
+        methods: {
+          fetchLessonData() {
+            fetch("http://localhost:3000/lessons").then((response) => {
+              response.json().then((data) => {
+                store.lessons = data;
+              });
+            });
+          },
+        },
+      });
+    </script>
+  </body>
+</html>
