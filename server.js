@@ -20,6 +20,7 @@ app.param('collectionName', function(req,res,next,collectionName){
   return next()
 })
 
+
 // mongoClient.connect(uri, function(err, db) {
 //   if (err) throw err;
 //   var dbo = db.db("cst3145");
@@ -33,6 +34,7 @@ app.param('collectionName', function(req,res,next,collectionName){
 //root url
 app.get('/',function(req,res){
   res.send("/db/lessonsDB")
+  console.log(res)
 })
 
 //gets all lessons
