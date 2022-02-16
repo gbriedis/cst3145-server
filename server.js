@@ -20,11 +20,6 @@ app.param('collectionName', function(req,res,next,collectionName){
   return next()
 })
 
-//root url
-app.get('/',function(req,res){
-  res.send("/collection/lessonsDB to view all lessons")
-})
-
 //gets all lessons
 app.get('/collection/:collectionName',function(req,res,next){
   req.collection.find({}).toArray(function(err,results){
