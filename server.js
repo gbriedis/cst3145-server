@@ -16,7 +16,7 @@ mongoClient.connect(uri, function(err,client){
 })
 
 app.param('collectionName', function(req,res,next,collectionName){
-  req.collection = db.collection(collectionName)
+  req.collection = database.collection(collectionName)
   return next()
 })
 
