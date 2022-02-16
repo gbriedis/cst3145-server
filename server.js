@@ -33,12 +33,12 @@ app.param('collectionName', function(req,res,next,collectionName){
 
 //root url
 app.get('/',function(req,res){
-  res.send("/db/lessonsDB")
+  res.send("/collection/lessonsDB")
   console.log(res)
 })
 
 //gets all lessons
-app.get('/db/:collectionName',function(req,res,next){
+app.get('/collection/:collectionName',function(req,res,next){
   req.collection.find({}).toArray(function(err,results){
       if (err){
           return next(err)
