@@ -20,21 +20,16 @@ app.param('collectionName', function(req,res,next,collectionName){
   return next()
 })
 
-
-// mongoClient.connect(uri, function(err, db) {
-//   if (err) throw err;
-//   var dbo = db.db("cst3145");
-//   dbo.collection("lessonsDB").find({}).toArray(function(err, result) {
-//     if (err) throw err;
-//     lessons = result
-//     db.close();
-//   });
-// });
-
 //root url
 app.get('/',function(req,res){
-  res.send("collection/lessonsDB")
-  console.log(res)
+  app.get('/collection/lessonsDB', function(req,res) {
+    if (err){
+      return next(err)
+  }
+  else{
+      res.send(res)
+  }
+  })
 })
 
 //gets all lessons
