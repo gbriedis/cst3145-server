@@ -32,7 +32,7 @@ app.param('collectionName', function(req,res,next,collectionName){
 
 //root url
 app.get('/',function(req,res){
-  res.send("/db/lessons")
+  res.send("/db/lessonsDB")
 })
 
 //gets all lessons
