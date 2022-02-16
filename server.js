@@ -22,14 +22,7 @@ app.param('collectionName', function(req,res,next,collectionName){
 
 //root url
 app.get('/',function(req,res){
-  app.get('/collection/lessonsDB', function(req,res) {
-    if (err){
-      return next(err)
-  }
-  else{
-      res.send(res)
-  }
-  })
+  res.send("/collection/lessonsDB to view all lessons")
 })
 
 //gets all lessons
