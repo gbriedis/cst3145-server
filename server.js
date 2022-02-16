@@ -30,9 +30,21 @@ app.param('collectionName', function(req,res,next,collectionName){
 //   });
 // });
 
-// GET requests to /users returns user information
-app.get("/lessons:lessons", function(req, res) {
-  res.send(lessons)
+//root url
+app.get('/',function(req,res){
+  res.send("/db/lessons")
+})
+
+//gets all lessons
+app.get('/db/:collectionName',function(req,res,next){
+  req.collection.find({}).toArray(function(err,results){
+      if (err){
+          return next(err)
+      }
+      else{
+          res.send(results)
+      }
+  })
 })
 
 // returning a 404 error when path is not found
