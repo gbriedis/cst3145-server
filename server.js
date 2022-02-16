@@ -9,19 +9,29 @@ app.use(cors())
 
 
 // get all lessons from MongoDB
+let database
 let lessons = []
-mongoClient.connect(uri, function(err, db) {
-  if (err) throw err;
-  var dbo = db.db("cst3145");
-  dbo.collection("lessonsDB").find({}).toArray(function(err, result) {
-    if (err) throw err;
-    lessons = result
-    db.close();
-  });
-});
+mongoClient.connect(uri, function(err,client){
+    database = client.db('cst3145')
+})
+
+app.param('collectionName', function(req,res,next,collectionName){
+  req.collection = db.collection(collectionName)
+  return next()
+})
+
+// mongoClient.connect(uri, function(err, db) {
+//   if (err) throw err;
+//   var dbo = db.db("cst3145");
+//   dbo.collection("lessonsDB").find({}).toArray(function(err, result) {
+//     if (err) throw err;
+//     lessons = result
+//     db.close();
+//   });
+// });
 
 // GET requests to /users returns user information
-app.get("/lessons", function(req, res) {
+app.get("/lessons:lessons", function(req, res) {
   res.send(lessons)
 })
 
