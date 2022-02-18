@@ -1,17 +1,17 @@
 var express = require("express");
 var app = express();
 var cors = require('cors')
-
+var bodyParser = require('body-parser');
 const mongoClient = require('mongodb').MongoClient
 const uri = "mongodb+srv://gbriedis:strongpw@cluster0.pr4ee.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 
 app.use(cors())
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 
-
-let database
-let lessons = []
 // connect to CST3145 database which contains multiple collections (lessons/users/orders placed)
+let database
 mongoClient.connect(uri, function(err,client){
     database = client.db('cst3145')
 })
@@ -34,13 +34,41 @@ app.get('/collection/:collectionName',function(req,res,next){
   })
 })
 
-//saves new order to the collection
+//saves new order to the placedOrdersDB database
 app.post('/collection/:collectionName',function(req,res,next){
-    console.log("REQ DETAILS!!!!!!!!!!!!")
-    console.log(req)
+  req.collection.insertOne(req.body,function(err,result){
+      if (err){
+          return next(err)
+      }
+      else{
+          res.send("success")
+      }
+  })
+})
 
+//updates number of spaces
+app.put('/collection/:collectionName',function(req,res,next){
+  console.log(req.body);
+  let i = 0;
+  req.body.lesson_ID.forEach(element => {
+    console.log(element);
+    console.log(req.body.spaces[i]);
+    req.collection.updateOne({
+      id: element
+    }, {
+      $set: {
+        spaces: req.body.spaces[i]
+      }
+    })
+    i++
+  });
+})
 
-    app.send("Checked")
+//logger
+app.use(function(req,res,next){
+  console.log("Request ID: "+req.url)
+  console.log("Request Date: "+ new Date())
+  next()
 })
 
 // returning a 404 error when path is not found
