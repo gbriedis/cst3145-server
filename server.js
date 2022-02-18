@@ -64,6 +64,22 @@ app.put('/collection/:collectionName',function(req,res,next){
   });
 })
 
+// search database by either location or subject (full-text only)
+app.get('/collection/:collectionName/:value',function(req,res,next) {  
+  let value = req.params.value
+  
+  req.collection.find({$text: {$search: value}}).toArray(function(err,result) {
+    if (err){
+      return next(err)
+    }
+    else{
+      console.log(result);
+      res.send(result)
+    }
+  })
+})
+
+
 //logger
 app.use(function(req,res,next){
   console.log("Request ID: "+req.url)
